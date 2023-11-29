@@ -1,24 +1,22 @@
 "use client";
+
+import React, { useState } from "react";
 import {
   Container,
   Image,
   Grid,
+  Flex,
   Stack,
   Group,
+  Select,
   Text,
   TextInput,
   Button,
-  Select,
-  calendar
 } from "@mantine/core";
-import { useState } from "react";
-import { DateInput } from '@mantine/dates';
 import Link from "next/link";
-import { IconEye } from "@tabler/icons-react";
+import { DateInput } from "@mantine/dates";
+import { IconEye, IconCalendar } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconCalendar } from "@tabler/icons-react";
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 export default function Signup() {
   const [date, setDate] = useState(null);
@@ -32,18 +30,17 @@ export default function Signup() {
       fontSize: "1.2em",
     },
   };
-  const inputStyles2 = {
+  const inputStyles_phone = {
     input: {
       border: "none",
       fontSize: "1.2em",
-      borderBottom:'none',
-      width:"87%"
+      borderBottom: "none",
     },
   };
   const selectStyles = {
     input: {
       border: "none",
-      height:"42px",
+      height: "42px",
       borderBottom: "2px solid #1F4145",
       fontSize: "1.2em",
     },
@@ -77,13 +74,19 @@ export default function Signup() {
           </Stack>
         </Grid.Col>
         <Grid.Col span={6}>
-          <Group h="100vh" justify="center" align="center">
+          <Group
+            h="100vh"
+            justify="center"
+            align="center"
+            px={isMobileView ? "2rem" : "0rem"}
+            py={isMobileView ? "1rem" : "0rem"}
+          >
             <Stack gap="0.5rem" miw="60%">
               <Text
                 c="#1F4145"
                 fz={isMobileView ? "2rem" : "2.5rem"}
                 fw="600"
-                mb="1rem"
+                mb="0.5rem"
               >
                 Sign Up
               </Text>
@@ -92,41 +95,53 @@ export default function Signup() {
                   type="text"
                   placeholder="Name"
                   styles={inputStyles}
-                  mb="2rem"
+                  mb={isMobileView ? "1rem" : "2rem"}
                   radius={0}
                 />
-                <Stack style={{marginBottom:"2rem",display:"flex",flexDirection:"row",}}>
-                 {/* <DateInput valueFormat="YYYY MMM DD" placeholder="DOB" radius={0} rightSection={<IconCalendar />} styles={selectStyles}/> */}
-                 <TextInput valueFormat="YYYY MMM DD" placeholder="DOB" radius={0} rightSection={<IconCalendar />} styles={selectStyles}/>
-                  <Select size="md" styles={selectStyles} radius={0}   placeholder="Gender" data={['Male', 'Female', 'Other']}/>
-                </Stack>
-                <Stack style={{display:"flex",
-                  flexDirection:"row",
-                  alignItems:'center',
-                  alignContent:"center",
-                  borderBottom:"2px solid #1F4145",
-                  height:"36px",
-                  marginBottom:"2rem",
-                  paddingBottom:"2px",
-                  justifyContent:"left",
-                  gap:'0px'}}>
-                  <Stack style={{borderRight:"2px solid",
-                    width:'13%',
-                    fontSize:"1.2em"}}>
-                  +91 
-                  </Stack>
+                <Flex
+                  direction={isMobileView ? "column" : "row"}
+                  mb={isMobileView ? "1rem" : "2rem"}
+                  gap="1rem"
+                >
+                  <DateInput
+                    valueFormat="YYYY MMM DD"
+                    placeholder="DOB"
+                    radius={0}
+                    rightSection={<IconCalendar />}
+                    styles={selectStyles}
+                  />
+                  <Select
+                    size="md"
+                    styles={selectStyles}
+                    radius={0}
+                    placeholder="Gender"
+                    data={["Male", "Female", "Other"]}
+                  />
+                </Flex>
+                <Group
+                  align="center"
+                  mb={isMobileView ? "1rem" : "2rem"}
+                  pb="2px"
+                  style={{ borderBottom: "2px solid #1F4145" }}
+                >
+                  <Text
+                    fz="1.2em"
+                    style={{ borderRight: "2px solid", paddingRight: "0.5rem" }}
+                  >
+                    +91
+                  </Text>
                   <TextInput
                     type="text"
                     placeholder="Phone Number"
-                    styles={inputStyles2}
+                    styles={inputStyles_phone}
                     radius={0}
                   />
-                </Stack>
+                </Group>
                 <TextInput
                   type="text"
                   placeholder="Email address (Optional)"
                   styles={inputStyles}
-                  mb="2rem"
+                  mb={isMobileView ? "1rem" : "2rem"}
                   radius={0}
                 />
                 <TextInput
@@ -152,7 +167,7 @@ export default function Signup() {
                     href="/login"
                     style={{ textDecoration: "none", color: "#089BAB" }}
                   >
-                    Sign Up
+                    Sign in
                   </Link>
                 </Text>
               </form>
