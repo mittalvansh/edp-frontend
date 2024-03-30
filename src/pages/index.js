@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function index() {
-  return (
-    <div>GO to other routes like /login,/signup or /chat</div>
-  )
+  return <div></div>;
 }
 
-export default index
+export default index;
