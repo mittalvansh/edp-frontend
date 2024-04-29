@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons"; // Import the correct icon
 import "@fortawesome/fontawesome-free/css/all.css";
 
-export default function DefaultDashboard() {
+export default function DefaultDashboard({page,setPage}) {
   return (
     
     <Grid mt="30px" align="start">
@@ -182,6 +182,7 @@ export default function DefaultDashboard() {
           bg="linear-gradient(90deg, #078871, #09AB8E)"
           pos="absolute"
           right="16px"
+          onClick={()=>setPage(1)}
         >
           <Text size="16px" fw={600}>
             Start Diagnosis
