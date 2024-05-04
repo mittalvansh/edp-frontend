@@ -18,15 +18,15 @@ const DocChat = ({ page, setPage }) => {
       <Stack justify="center" p={0} w="100%">
         <Stack w="100%" justify="center" align="center" style={{ border: "1px solid", borderRadius: "0.6rem", borderColor: "#D0D5DD" }} p="1rem">
           <Text c="#1F4145" fw="bold">Some Common Symmptoms</Text>
-          <Grid w="80%" align="center" justify="center">
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
-            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Button</Button></Grid.Col>
+          <Grid w="100%" px="1rem" align="center" justify="center">
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Fever</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Fatigue</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Headache</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Cough</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Sore Throat</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Runny Nose</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Chest Pain</Button></Grid.Col>
+            <Grid.Col span={3}><Button variant="outline" color="#089BAB" radius="xl">Diarrhea</Button></Grid.Col>
           </Grid>
         </Stack>
         {/* Add msg area */}
