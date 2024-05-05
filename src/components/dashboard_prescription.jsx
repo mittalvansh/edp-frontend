@@ -61,7 +61,7 @@ export default function DashboardPrescription({ page, setPage }) {
   };
 
   return (
-    <Box>
+    <Box p="25px">
       <Group align="center">
         <IconChevronLeft
           size={36}
@@ -82,7 +82,7 @@ export default function DashboardPrescription({ page, setPage }) {
         mr="20px"
         ml="30px"
         onClick={() => {
-          setPage(1);
+          setPage(3);
         }}
       >
         <Text size="16px" c="#101828" fw={600}>
@@ -96,7 +96,7 @@ export default function DashboardPrescription({ page, setPage }) {
         bg="#078871"
         mt="20px"
         onClick={() => {
-          setPage(2);
+          setPage(4);
         }}
       >
         <Text size="16px" fw={600}>

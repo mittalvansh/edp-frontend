@@ -17,7 +17,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 export default function DefaultDashboard({page,setPage}) {
   return (
     
-    <Grid mt="30px" align="start">
+    <Grid mt="30px" align="start" p="25px">
       <Grid.Col span={4}>
         <Box c="#F4FEFF" w="100%" align="start">
           <Flex align="center" gap="md">

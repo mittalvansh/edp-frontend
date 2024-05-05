@@ -18,7 +18,7 @@ export default function Diagnosing({ page, setPage }) {
   const [active, setActive] = useState(0);
 
   return (
-    <Box>
+    <Box p="25px">
       <Group align="center" gap={5} mb="20px">
         <IconChevronLeft size={36} />
         <Text c="#1F4145" size="1.5rem" fw={600}>

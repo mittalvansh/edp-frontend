@@ -90,7 +90,7 @@ export default function DashboardMedicalReport({page,setPage}) {
     
     
   return (
-    <Box>
+    <Box p="25px">
       <Group align="center">
         <IconChevronLeft size={36} onClick={()=>{setPage(0)}}/>
         <Text c="#1F4145" size="1.5rem" fw={600}>
@@ -98,11 +98,11 @@ export default function DashboardMedicalReport({page,setPage}) {
         </Text>
       </Group>
       <Button w="172px" h="48px" radius="xl" bg="#078871" mt='20px' mr='20px' ml='30px'>
-        <Text size="16px" fw={600} onClick={()=>{setPage(1)}}>
+        <Text size="16px" fw={600} onClick={()=>{setPage(3)}}>
           Medical Report
         </Text>
       </Button>
-      <Button w="172px" h="48px" radius="xl" bg="#BDD3D7" mt='20px' onClick={()=>{setPage(2)}}>
+      <Button w="172px" h="48px" radius="xl" bg="#BDD3D7" mt='20px' onClick={()=>{setPage(4)}}>
         <Text size="16px" fw={600} c='#101828'> 
           Prescription
         </Text>
