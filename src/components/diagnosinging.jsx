@@ -5,6 +5,8 @@ import {
   Text,
   Image,
   Stepper,
+  Flex,
+  Button
 } from "@mantine/core";
 import {
   IconChevronLeft,
@@ -92,8 +94,23 @@ export default function Diagnosing({ page, setPage }) {
             w={"272px"}
             mb="15px"
           />
+           <Flex align='flex-end' justify='flex-end'>
+            <Button
+              w="172px"
+              h="48px"
+              radius="xl"
+              bg="#078871"
+              mt="20px"
+              onClick={() => { setPage(2); }}
+            >
+              <Text size="16px" fw={600}>
+                Next
+              </Text>
+            </Button>
+          </Flex>
         </Grid.Col>
       </Grid>
+      
     </Box>
   );
 }

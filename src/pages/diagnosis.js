@@ -6,7 +6,7 @@ import { useState } from "react";
 
 
 export default function Diagnosis() {
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(0);
 
   return (
     <MainAppShell>
