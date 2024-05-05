@@ -4,9 +4,8 @@ import Diagnosing from "@/components/diagnosinging";
 import DiagnosisIntro from "@/components/diagnosisIntro";
 import { useState } from "react";
 
-
 export default function Diagnosis() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(2);
 
   return (
     <MainAppShell>
