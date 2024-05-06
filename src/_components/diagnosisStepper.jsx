@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Stepper,
@@ -8,7 +8,7 @@ import {
   Text,
   Image,
   Button,
-  Paper
+  Paper,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 
@@ -16,7 +16,53 @@ export default function DiagnosisStepper({ page, setPage }) {
   const [active, setActive] = useState(0);
   const [temp, setTemp] = useState({});
   const [spo2bpm, setSpo2bpm] = useState({});
-  const [counter, setCounter] = useState(10);
+  const [counter, setCounter] = useState(11);
+
+  useEffect(() => {
+    if (counter == 10) {
+      if (active === 0) {
+        const id = notifications.show({
+          title: "Place your finger on the Temperature Sensor",
+          message: `Time Remaining: ${counter} seconds`,
+          autoClose: 1000,
+        });
+        var count = counter;
+        const ido = setInterval(() => {
+          if (counter > 0) {
+            notifications.update({
+              id,
+              title: "Place your finger on the Temperature Sensor",
+              message: `Time Remaining: ${--count} seconds`,
+              autoClose: 10000,
+            });
+          } else {
+            clearInterval(ido);
+            notifications.close(ido);
+          }
+        }, 1000);
+      } else {
+        const id = notifications.show({
+          title: "Place your finger on the Heart Rate and Oxygen Sensor",
+          message: `Time Remaining: ${counter} seconds`,
+          autoClose: 1000,
+        });
+        var count = counter;
+        const ido = setInterval(() => {
+          if (counter > 0) {
+            notifications.update({
+              id,
+              title: "Place your finger on the Heart Rate and Oxygen Sensor",
+              message: `Time Remaining: ${--count} seconds`,
+              autoClose: 10000,
+            });
+          } else {
+            clearInterval(ido);
+            notifications.close(ido);
+          }
+        }, 1000);
+      }
+    }
+  }, [counter]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -35,9 +81,7 @@ export default function DiagnosisStepper({ page, setPage }) {
     };
   }, []);
 
-
   useEffect(() => {
-    console.log(counter)
     if (active === 0 && counter == 0) {
       getTemp();
     } else if (active === 1 && counter == 0) {
@@ -45,25 +89,27 @@ export default function DiagnosisStepper({ page, setPage }) {
     }
   }, [active, counter]);
 
-
   const getTemp = async () => {
-    const response = await fetch("http://localhost:8000/api/v1/sensors/temperature");
+    const response = await fetch(
+      "http://localhost:8000/api/v1/sensors/temperature"
+    );
     const data = await response.json();
     localStorage.setItem("temperature",data.object_temperature)
     setTemp(data);
-    setCounter(10)
-    setActive(1)
-
-  }
+    setCounter(10);
+    setActive(1);
+  };
 
   const getbpmspo2 = async () => {
-    const response = await fetch("http://localhost:8000/api/v1/sensors/heart-rate");
+    const response = await fetch(
+      "http://localhost:8000/api/v1/sensors/heart-rate"
+    );
     const data = await response.json();
     localStorage.setItem("spo2",data.spo2)
     localStorage.setItem("bpm",data.bpm)
     setSpo2bpm(data);
-    setActive(3)
-  }
+    setActive(3);
+  };
 
   return (
     <Box p="4rem">
@@ -109,7 +155,13 @@ export default function DiagnosisStepper({ page, setPage }) {
               />
               <Stepper.Step
                 label="Heart Rate"
-                description={Object.keys(spo2bpm).length == 0 ? active == 1 ? "Monitoring Your Heart Rate" : "--" : "Blood Per Minute - " + spo2bpm.bpm}
+                description={
+                  Object.keys(spo2bpm).length == 0
+                    ? active == 1
+                      ? "Monitoring Your Heart Rate"
+                      : "--"
+                    : "Blood Per Minute - " + spo2bpm.bpm
+                }
                 completedIcon={
                   <Image src="/completedIcon.svg" h="100%" w="100%" />
                 }
@@ -119,7 +171,13 @@ export default function DiagnosisStepper({ page, setPage }) {
               />
               <Stepper.Step
                 label="Oxygen Saturation"
-                description={Object.keys(spo2bpm).length == 0 ? active == 1 ? "Monitoring Your Oxygen Saturation" : "--" : "Oxygen Saturation - " + spo2bpm.spo2}
+                description={
+                  Object.keys(spo2bpm).length == 0
+                    ? active == 1
+                      ? "Monitoring Your Oxygen Saturation"
+                      : "--"
+                    : "Oxygen Saturation - " + spo2bpm.spo2
+                }
                 completedIcon={
                   <Image src="/completedIcon.svg" h="100%" w="100%" />
                 }
@@ -150,12 +208,12 @@ export default function DiagnosisStepper({ page, setPage }) {
           Next
         </Button>
       </Flex>
-      <Paper w={350} shadow="md" radius="md" p="lg" withBorder pos="fixed" left="4rem" bottom="1rem" style={{ zIndex: "1000" }}>
+      {/* <Paper w={350} shadow="md" radius="md" p="lg" withBorder pos="fixed" left="4rem" bottom="1rem" style={{ zIndex: "1000" }}>
         <Text size="md">{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor after the timer"}</Text>
         <Text size="1.8rem" fw="bold">
           {counter}
         </Text>
-      </Paper>
+      </Paper> */}
     </Box>
   );
 }

@@ -48,13 +48,33 @@ const DocChat = ({ page, setPage }) => {
   const [value, setValue] = useState("");
   const [image, setImage] = useState("");
   const [docChat, setDocChat] = useState([]);
-  const temperature = ((localStorage.getItem("temperature") * 9.0 / 5.0) + 32.0)
+  const [tmp,setTmp]=useState(false)
+    const temperature = ((localStorage.getItem("temperature") * 9.0 / 5.0) + 32.0)
   const bpm = localStorage.getItem("bpm")
   const spo2 = localStorage.getItem("spo2")
-  const capture = useCallback(() => {
-    setImage(webcamRef.current.getScreenshot());
+  const capture = async() => {
+    const img=webcamRef.current.getScreenshot()
+    setImage(img);
+    console.log(img)
     close();
-  }, [webcamRef]);
+    const response = await axios.post(
+      "http://localhost:8000/api/v1/chat/chat",
+      {
+        image: img,
+        pulse_rate: 80,
+        temperature: 98.6,
+        blood_pressure: "120/80",
+        oxygen_level: "90%",
+      }
+    );
+    console.log(response)
+    const arr = docChat;
+    arr.push({ message: response.data.message, id: 2 });
+    setDocChat(arr);
+    setTmp(!tmp)
+  };
+  console.log(webcamRef)
+
   async function uploadBlob(audioBlob, fileType) {
     const formData = new FormData();
     formData.append("audio_data", audioBlob, "file");
