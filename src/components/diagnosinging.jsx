@@ -37,18 +37,21 @@ export default function Diagnosing({ page, setPage }) {
   }, []);
 
   useEffect(() => {
-    if (active === 0) {
+    console.log(counter)
+    if (active === 0 && counter==0) {
       getTemp();
-    } else if (active === 1) {
-      setCounter(5);
+    } else if (active === 1 && counter==0) {
       getbpmspo2();
     }
-  }, [active]);
+  }, [active, counter]);
 
   const getTemp = async () => {
     const response = await fetch("http://localhost:8000/api/v1/sensors/temperature");
     const data = await response.json();
     setTemp(data);
+    setCounter(5)
+    setActive(1) 
+    
   }
 
   const getbpmspo2 = async () => {
