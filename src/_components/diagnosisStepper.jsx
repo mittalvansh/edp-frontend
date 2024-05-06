@@ -91,9 +91,9 @@ export default function DiagnosisStepper({ page, setPage }) {
                 iconSize="4rem"
                 description={
                   Object.keys(temp).length > 0
-                    ? "User Temperature" +
+                    ? "User Temperature - " +
                     temp.object_temperature +
-                    " Ambient Temperature" +
+                    " Ambient Temperature - " +
                     temp.ambient_temperature
                     : "Monitoring Your Temperature"
                 }
@@ -147,9 +147,9 @@ export default function DiagnosisStepper({ page, setPage }) {
           Next
         </Button>
       </Flex>
-      <Paper w={450} shadow="xs" p="xl">
-        <Text>{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor"}</Text>
-        <Text>
+      <Paper w={350} shadow="md" radius="md" p="lg" withBorder pos="fixed" left="4rem" bottom="1rem" style={{zIndex: "1000"}}>
+        <Text size="md">{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor after the timer"}</Text>
+        <Text size="1.8rem" fw="bold">
           {counter}
         </Text>
       </Paper>
