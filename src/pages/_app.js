@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <MantineProvider theme={theme}>
-      <Notifications />
+      <Notifications  position="bottom-left"/>
       <div>
         {page == 0 && <DiagnosisIntro page={page} setPage={setPage} />}
         {page == 1 && <DiagnosisStepper page={page} setPage={setPage} />}

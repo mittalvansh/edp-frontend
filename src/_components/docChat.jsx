@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useMediaRecorder } from "@/_hooks/useAudioRecorder";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -18,7 +18,9 @@ import {
   IconCamera,
   IconChevronLeft,
   IconMicrophone,
+  IconPlayerStop,
 } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 import Webcam from "react-webcam";
 import axios from "axios";
 
@@ -44,41 +46,46 @@ const DocChat = ({ page, setPage }) => {
   } = useMediaRecorder();
   const audioRef = useRef(null);
   const webcamRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState("");
-  const [image, setImage] = useState("");
   const [docChat, setDocChat] = useState([]);
-  const [tmp, setTmp] = useState(false)
-  const temperature = localStorage.getItem("temperature")
-  const bpm = localStorage.getItem("bpm")
-  const spo2 = localStorage.getItem("spo2")
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [tmp, setTmp] = useState(false);
+  const temperature = localStorage.getItem("temperature");
+  const bpm = localStorage.getItem("bpm");
+  const spo2 = localStorage.getItem("spo2");
+
   const capture = async () => {
-    const img = webcamRef.current.getScreenshot()
-    setImage(img);
-    console.log(img)
+    const img = webcamRef.current.getScreenshot();
+
     close();
-    const response = await axios.post(
-      "http://localhost:8000/api/v1/chat/chat",
-      {
-        image: img,
-        pulse_rate: bpm,
-        temperature: temperature,
-        oxygen_level: spo2,
-      }
-    );
-    console.log(response)
-    const arr = docChat;
-    arr.push({ message: response.data.message, id: 2 });
-    setDocChat(arr);
-    setTmp(!tmp)
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/chat/chat",
+        {
+          image: img,
+          pulse_rate: bpm,
+          temperature: temperature,
+          oxygen_level: spo2,
+        }
+      );
+      const arr = docChat;
+      arr.push({ message: response.data.message, id: 2 });
+      setDocChat(arr);
+      setTmp(!tmp);
+    } catch (error) {
+      console.error("Error sending image message:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-  console.log(webcamRef)
 
   async function uploadBlob(audioBlob, fileType) {
     const formData = new FormData();
     formData.append("audio_data", audioBlob, "file");
     formData.append("type", fileType || "wav");
-
+    setLoading(true);
     // Your server endpoint to upload audio:
     const apiUrl = "http://localhost:8000/api/v1/chat/chat";
     try {
@@ -100,6 +107,7 @@ const DocChat = ({ page, setPage }) => {
       const arr = docChat;
       arr.push({ message: response2.data.message, id: 2 });
       setDocChat(arr);
+      setLoading(false);
       return response.json();
     } catch (error) {
       console.error("Error", error);
@@ -121,7 +129,7 @@ const DocChat = ({ page, setPage }) => {
           try {
             const response = await fetch(mediaUrl);
             const blob = await response.blob();
-            const fileType = "wav"; // Change this to 'wav' or any other desired file type
+            const fileType = "wav";
             const uploadResponse = await uploadBlob(blob, fileType);
             stopRecording();
             deleteRecording();
@@ -159,7 +167,16 @@ const DocChat = ({ page, setPage }) => {
     }
   };
   const handleSubmit = async () => {
-    if (value) {
+    if (value === "") {
+      notifications.show({
+        title: "Please enter a message",
+        message: "Please enter a message to send",
+        color: "red",
+        autoClose: 5000,
+      });
+    } else {
+      setLoading(true);
+      setValue("");
       try {
         let arr = docChat;
         arr.push({ message: value, id: 1 });
@@ -176,9 +193,10 @@ const DocChat = ({ page, setPage }) => {
 
         arr.push({ message: response.data.message, id: 2 });
         setDocChat(arr);
-        setValue("");
       } catch (error) {
         console.error("Error sending text message:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -292,14 +310,7 @@ const DocChat = ({ page, setPage }) => {
           </Group>
         ))}
 
-        <Group
-          px="4rem"
-          w="100%"
-          pos="fixed"
-          bottom="1.5rem"
-          left="0"
-        // style={{ zIndex: 1000 }}
-        >
+        <Group px="4rem" w="100%" pos="fixed" bottom="0.5rem" left="0">
           <TextInput
             w="88%"
             size="lg"
@@ -309,34 +320,44 @@ const DocChat = ({ page, setPage }) => {
             placeholder="Tell us how are you feeling"
             rightSection={
               <ActionIcon variant="transparent" c="#9CA0A0">
-                <IconSend onClick={handleSubmit} />
+                {!loading ? (
+                  <IconSend onClick={handleSubmit} />
+                ) : (
+                  <IconPlayerStop />
+                )}
               </ActionIcon>
             }
           />
-          <ActionIcon
-            variant="transparent"
-            c="white"
-            p={0}
-            size="3.2rem"
-            radius="50%"
-            bg={recordingState === "recording" ? "#FF4545" : "#089BAB"}
-            onClick={
-              recordingState === "recording" ? stopRecording : startRecording
-            }
-          >
-            <IconMicrophone />
-          </ActionIcon>
-          <ActionIcon
-            variant="transparent"
-            c="white"
-            p={0}
-            size="3.2rem"
-            radius="50%"
-            bg="#089BAB"
-            onClick={open}
-          >
-            <IconCamera />
-          </ActionIcon>
+          {!loading && (
+            <>
+              <ActionIcon
+                variant="transparent"
+                c="white"
+                p={0}
+                size="3.2rem"
+                radius="50%"
+                bg={recordingState === "recording" ? "#FF4545" : "#089BAB"}
+                onClick={
+                  recordingState === "recording"
+                    ? stopRecording
+                    : startRecording
+                }
+              >
+                <IconMicrophone />
+              </ActionIcon>
+              <ActionIcon
+                variant="transparent"
+                c="white"
+                p={0}
+                size="3.2rem"
+                radius="50%"
+                bg="#089BAB"
+                onClick={open}
+              >
+                <IconCamera />
+              </ActionIcon>
+            </>
+          )}
         </Group>
       </Stack>
     </Box>
