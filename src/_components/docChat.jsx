@@ -48,12 +48,12 @@ const DocChat = ({ page, setPage }) => {
   const [value, setValue] = useState("");
   const [image, setImage] = useState("");
   const [docChat, setDocChat] = useState([]);
-  const [tmp,setTmp]=useState(false)
-    const temperature = ((localStorage.getItem("temperature") * 9.0 / 5.0) + 32.0)
+  const [tmp, setTmp] = useState(false)
+  const temperature = localStorage.getItem("temperature")
   const bpm = localStorage.getItem("bpm")
   const spo2 = localStorage.getItem("spo2")
-  const capture = async() => {
-    const img=webcamRef.current.getScreenshot()
+  const capture = async () => {
+    const img = webcamRef.current.getScreenshot()
     setImage(img);
     console.log(img)
     close();
@@ -61,10 +61,9 @@ const DocChat = ({ page, setPage }) => {
       "http://localhost:8000/api/v1/chat/chat",
       {
         image: img,
-        pulse_rate: 80,
-        temperature: 98.6,
-        blood_pressure: "120/80",
-        oxygen_level: "90%",
+        pulse_rate: bpm,
+        temperature: temperature,
+        oxygen_level: spo2,
       }
     );
     console.log(response)
