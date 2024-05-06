@@ -7,7 +7,7 @@ import {
   Image,
   Stepper,
   Flex,
-  Button
+  Button, Paper
 } from "@mantine/core";
 import {
   IconChevronLeft,
@@ -17,10 +17,30 @@ export default function Diagnosing({ page, setPage }) {
   const [active, setActive] = useState(0);
   const [temp, setTemp] = useState({});
   const [spo2bpm, setSpo2bpm] = useState({});
+  const [counter, setCounter] = useState(5);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCounter((prevCounter) => {
+        if (prevCounter > 0) {
+          return prevCounter - 1;
+        } else {
+          return prevCounter;
+        }
+      });
+    }, 1000);
+    return () => {
+      if (id) {
+        clearInterval(id);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (active === 0) {
       getTemp();
     } else if (active === 1) {
+      setCounter(5);
       getbpmspo2();
     }
   }, [active]);
@@ -29,7 +49,6 @@ export default function Diagnosing({ page, setPage }) {
     const response = await fetch("http://localhost:8000/api/v1/sensors/temperature");
     const data = await response.json();
     setTemp(data);
-    setActive(1);
   }
 
   const getbpmspo2 = async () => {
@@ -69,6 +88,7 @@ export default function Diagnosing({ page, setPage }) {
               }
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
+              loading={active === 0}
             />
             <Stepper.Step
               label="Heart Rate"
@@ -78,6 +98,7 @@ export default function Diagnosing({ page, setPage }) {
               }
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
+              loading={active === 1}
             />
             <Stepper.Step
               label="Oxygen Saturation"
@@ -87,6 +108,7 @@ export default function Diagnosing({ page, setPage }) {
               }
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
+              loading={active === 1}
             />
 
           </Stepper>
@@ -123,7 +145,12 @@ export default function Diagnosing({ page, setPage }) {
           </Flex>
         </Grid.Col>
       </Grid>
-
+      <Paper w={450} shadow="xs" p="xl">
+        <Text>{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor"}</Text>
+        <Text>
+          {counter}
+        </Text>
+      </Paper>
     </Box>
   );
 }
