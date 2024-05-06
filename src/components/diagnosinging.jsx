@@ -18,6 +18,7 @@ export default function Diagnosing({ page, setPage }) {
   const [temp, setTemp] = useState({});
   const [spo2bpm, setSpo2bpm] = useState({});
   const [counter, setCounter] = useState(5);
+  const [counterVisible, setCounterVisible] = useState(true);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -31,6 +32,7 @@ export default function Diagnosing({ page, setPage }) {
     }, 1000);
     return () => {
       if (id) {
+        setCounterVisible(false)
         clearInterval(id);
       }
     };
@@ -38,9 +40,9 @@ export default function Diagnosing({ page, setPage }) {
 
   useEffect(() => {
     console.log(counter)
-    if (active === 0 && counter==0) {
+    if (active === 0 && counter == 0) {
       getTemp();
-    } else if (active === 1 && counter==0) {
+    } else if (active === 1 && counter == 0) {
       getbpmspo2();
     }
   }, [active, counter]);
@@ -50,8 +52,8 @@ export default function Diagnosing({ page, setPage }) {
     const data = await response.json();
     setTemp(data);
     setCounter(5)
-    setActive(1) 
-    
+    setActive(1)
+
   }
 
   const getbpmspo2 = async () => {
@@ -93,7 +95,7 @@ export default function Diagnosing({ page, setPage }) {
               color="#EDFCFE"
               loading={active === 0}
             />
-            <Stepper.Step
+            {object.keys(spo2bpm).length == 0 && <Stepper.Step
               label="Heart Rate"
               description="--"
               completedIcon={
@@ -102,8 +104,8 @@ export default function Diagnosing({ page, setPage }) {
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
               loading={active === 1}
-            />
-            <Stepper.Step
+            />}
+            {object.keys(spo2bpm).length == 0 && <Stepper.Step
               label="Oxygen Saturation"
               description="--"
               completedIcon={
@@ -112,7 +114,16 @@ export default function Diagnosing({ page, setPage }) {
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
               loading={active === 1}
-            />
+            />}
+            {object.keys(spo2bpm).length != 0 && <Stepper.Step
+              label="Blood Pressure and Oxygen Saturation"
+              description={"Blood Pressure per Minute" + spo2bpm.bpm + "Oxygen Saturation" + spo2bpm.spo2}
+              completedIcon={
+                <Image src="/Ellipse 12.svg" h={"100%"} w={"100%"} />
+              }
+              icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
+              color="#EDFCFE"
+            />}
 
           </Stepper>
         </Grid.Col>
@@ -148,12 +159,12 @@ export default function Diagnosing({ page, setPage }) {
           </Flex>
         </Grid.Col>
       </Grid>
-      <Paper w={450} shadow="xs" p="xl">
+      {counterVisible && <Paper w={450} shadow="xs" p="xl">
         <Text>{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor"}</Text>
         <Text>
           {counter}
         </Text>
-      </Paper>
+      </Paper>}
     </Box>
   );
 }
