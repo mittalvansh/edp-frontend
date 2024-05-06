@@ -38,7 +38,7 @@ export default function DiagnosisIntro({ page, setPage }) {
           <Text c="#667085" size="2rem" mb="1rem" ta="right">
             Please keep your finger on the corresponding sensor that glows up.{" "}
           </Text>
-          <Image src="/fingerprint.svg" alt="" h="400px" w="400px" mb="15px" />
+          <Image src="/fingerprint.svg" alt="" h="400px" w="400px" />
         </Grid.Col>
       </Grid>
 

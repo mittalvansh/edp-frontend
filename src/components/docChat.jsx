@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useMediaRecorder } from "@/_hooks/useAudioRecorder";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -48,7 +48,7 @@ const DocChat = ({ page, setPage }) => {
   const [value, setValue] = useState("");
   const [image, setImage] = useState("");
   const [docChat, setDocChat] = useState([]);
-  
+
   const capture = useCallback(() => {
     setImage(webcamRef.current.getScreenshot());
     close();
@@ -78,16 +78,15 @@ const DocChat = ({ page, setPage }) => {
           oxygen_level: "90%",
         }
       );
-      const arr=docChat;
-      arr.push({"message":response2.data.message,"id":2});
+      const arr = docChat;
+      arr.push({ message: response2.data.message, id: 2 });
       setDocChat(arr);
-      console.log(response2);
       return response.json();
     } catch (error) {
       console.error("Error", error);
     }
   }
-  console.log(docChat)
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -95,7 +94,6 @@ const DocChat = ({ page, setPage }) => {
     }
     if (mediaUrl) {
       const audioElement = new Audio(mediaUrl);
-      console.log(audioElement);
       audioElement.addEventListener("ended", () => setIsPlaying(false));
       audioRef.current = audioElement;
 
@@ -108,7 +106,6 @@ const DocChat = ({ page, setPage }) => {
             const uploadResponse = await uploadBlob(blob, fileType);
             stopRecording();
             deleteRecording();
-            console.log("File uploaded:", uploadResponse);
           } catch (error) {
             console.error("Error uploading file:", error);
           }
@@ -145,8 +142,8 @@ const DocChat = ({ page, setPage }) => {
   const handleSubmit = async () => {
     if (value) {
       try {
-        let arr=docChat;
-        arr.push({"message":value,"id":1});
+        let arr = docChat;
+        arr.push({ message: value, id: 1 });
         setDocChat(arr);
         const response = await axios.post(
           "http://localhost:8000/api/v1/chat/chat",
@@ -158,24 +155,21 @@ const DocChat = ({ page, setPage }) => {
             oxygen_level: "90%",
           }
         );
-        console.log(arr)
-        arr.push({"message":response.data.message,"id":2});
-        console.log(arr)
+
+        arr.push({ message: response.data.message, id: 2 });
         setDocChat(arr);
         setValue("");
-        
-        console.log(response);
       } catch (error) {
         console.error("Error sending text message:", error);
       }
     }
   };
   return (
-    <Box p="25px">
+    <Box p="4rem">
       <Modal
         opened={opened}
         onClose={close}
-        size="sm"
+        size="lg"
         centered
         title="Click a photo"
       >
@@ -187,19 +181,20 @@ const DocChat = ({ page, setPage }) => {
       </Modal>
       <Group align="center" gap={5} mb="1.5rem">
         <IconChevronLeft
-          size={36}
+          size={56}
+          cursor="pointer"
           onClick={() => {
             setDocChat([]);
-            
+
             setValue([]);
             setPage(0);
           }}
         />
-        <Text c="#1F4145" size="1.5rem" fw={600}>
+        <Text c="#1F4145" size="4rem" fw={600}>
           Doc Chat
         </Text>
       </Group>
-      <Stack>
+      <Stack mt="3.5rem">
         <Stack
           justify="center"
           align="center"
@@ -208,15 +203,23 @@ const DocChat = ({ page, setPage }) => {
             borderRadius: "0.6rem",
             borderColor: "#D0D5DD",
           }}
-          p="1rem"
+          p="1.5rem"
         >
-          <Text c="#1F4145" fw="bold">
-            Some Common Symmptoms
+          <Text c="#1F4145" fz="2.5rem" fw="bold" mb="1rem">
+            Some Common Symptoms
           </Text>
           <Grid w="100%" justify="center" align="center" px="1rem">
             {Symptoms.map((symptom, index) => (
               <Grid.Col key={index} span={3}>
-                <Button variant="outline" color="#089BAB" radius="xl" w="100%" onClick={()=>{setValue(value+' '+symptom)}}>
+                <Button
+                  variant="outline"
+                  color="#089BAB"
+                  radius="xl"
+                  w="100%"
+                  onClick={() => {
+                    setValue(value + " " + symptom);
+                  }}
+                >
                   {symptom}
                 </Button>
               </Grid.Col>
@@ -225,38 +228,62 @@ const DocChat = ({ page, setPage }) => {
         </Stack>
         {docChat.map((symptom, index) => (
           <div key={index}>
-            {symptom.id==1 && <Text bg="#EEF6F7" p="20px" mb="20px">
-              {symptom.message}
-            </Text>}
-            {symptom.id==2 && (
+            {symptom.id == 1 && (
+              <Text bg="#EEF6F7" p="20px" mb="20px">
+                {symptom.message}
+              </Text>
+            )}
+            {symptom.id == 2 && (
               <Text bg="#089BAB" p="20px" mb="20px" c="#FFFFFF">
                 <List gap="10px">
-                  <List.Item >
-                    <Text fw={600} size="24px" mb='10px'>Predicted Disease </Text>
-                    <Text mb="15px" size="18px" style={{lineHeight:"24px"}}>{symptom.message.predicted_disease}</Text>
+                  <List.Item>
+                    <Text fw={600} size="24px" mb="10px">
+                      Predicted Disease{" "}
+                    </Text>
+                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                      {symptom.message.predicted_disease}
+                    </Text>
                   </List.Item>
                   <List.Item>
-                    <Text fw={600} size="24px" mb='10px'>Treatement Plan </Text>
-                    <Text mb="15px" size="18px" style={{lineHeight:"24px"}}>{symptom.message.treatment_plan}</Text>
+                    <Text fw={600} size="24px" mb="10px">
+                      Treatement Plan{" "}
+                    </Text>
+                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                      {symptom.message.treatment_plan}
+                    </Text>
                   </List.Item>
                   <List.Item>
-                    <Text fw={600} size="24px" mb='10px'>Prescribed Drug </Text>
-                    <Text mb="15px" size="18px" style={{lineHeight:"24px"}}>{symptom.message.prescribed_drugs}</Text>
+                    <Text fw={600} size="24px" mb="10px">
+                      Prescribed Drug{" "}
+                    </Text>
+                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                      {symptom.message.prescribed_drugs}
+                    </Text>
                   </List.Item>
                   <List.Item>
-                    <Text fw={600} size="24px" mb='10px'>specialization </Text>
-                    <Text mb="15px" size="18px" style={{lineHeight:"24px"}}>{symptom.message.specialization}</Text>
+                    <Text fw={600} size="24px" mb="10px">
+                      specialization{" "}
+                    </Text>
+                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                      {symptom.message.specialization}
+                    </Text>
                   </List.Item>
                 </List>
               </Text>
-
             )}
           </div>
         ))}
 
-        <Group p="xs" w="100%">
+        <Group
+          px="4rem"
+          w="100%"
+          pos="fixed"
+          bottom="1.5rem"
+          left="0"
+          // style={{ zIndex: 1000 }}
+        >
           <TextInput
-            w="80%"
+            w="88%"
             size="lg"
             value={value}
             variant="filled"
@@ -292,21 +319,6 @@ const DocChat = ({ page, setPage }) => {
           >
             <IconCamera />
           </ActionIcon>
-
-          {/* {mediaUrl && (
-            <>
-              <button
-                id="play-audio"
-                className={`p-3 ${
-                  isPlaying ? "bg-red-500" : "bg-blue-500"
-                } text-white rounded-full`}
-                onClick={togglePlayback}
-                aria-label={isPlaying ? "Pause playback" : "Play recording"}
-              >
-              {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
-              </button>
-            </>
-          )} */}
         </Group>
       </Stack>
     </Box>

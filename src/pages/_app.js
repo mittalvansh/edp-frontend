@@ -6,10 +6,9 @@ const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
-import MainAppShell from "@/components/MainAppShell";
-import DocChat from "@/components/docChat";
-import Diagnosing from "@/components/diagnosinging";
 import DiagnosisIntro from "@/components/diagnosisIntro";
+import DiagnosisStepper from "@/components/diagnosisStepper";
+import DocChat from "@/components/docChat";
 import { useState } from "react";
 
 export default function App({ Component, pageProps }) {
@@ -18,10 +17,10 @@ export default function App({ Component, pageProps }) {
   return (
     <MantineProvider theme={theme}>
       <div>
-      {page == 0 && <DiagnosisIntro page={page} setPage={setPage} />}
-      {page == 1 && <Diagnosing page={page} setPage={setPage} />}
-      {page == 2 && <DocChat page={page} setPage={setPage} />}
-    </div>
+        {page == 0 && <DiagnosisIntro page={page} setPage={setPage} />}
+        {page == 1 && <DiagnosisStepper page={page} setPage={setPage} />}
+        {page == 2 && <DocChat page={page} setPage={setPage} />}
+      </div>
     </MantineProvider>
   );
 }

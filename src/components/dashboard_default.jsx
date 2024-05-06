@@ -7,16 +7,15 @@ import {
   Divider,
   Image,
   Button,
-  AppShell
+  AppShell,
 } from "@mantine/core";
 import classes from "../styles/UserCardImage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons"; // Import the correct icon
 import "@fortawesome/fontawesome-free/css/all.css";
 
-export default function DefaultDashboard({page,setPage}) {
+export default function DefaultDashboard({ page, setPage }) {
   return (
-    
     <Grid mt="30px" align="start" p="25px">
       <Grid.Col span={4}>
         <Box c="#F4FEFF" w="100%" align="start">
@@ -182,7 +181,7 @@ export default function DefaultDashboard({page,setPage}) {
           bg="linear-gradient(90deg, #078871, #09AB8E)"
           pos="absolute"
           right="16px"
-          onClick={()=>setPage(1)}
+          onClick={() => setPage(1)}
         >
           <Text size="16px" fw={600}>
             Start Diagnosis
@@ -190,6 +189,5 @@ export default function DefaultDashboard({page,setPage}) {
         </Button>
       </Grid.Col>
     </Grid>
-   
   );
 }

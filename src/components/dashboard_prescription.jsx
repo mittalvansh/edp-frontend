@@ -26,7 +26,7 @@ export default function DashboardPrescription({ page, setPage }) {
   const handlePrint = () => {
     // Get the medical-report div
     let medicalReportDiv = document.getElementById("prescription");
-  
+
     // Create a new window for printing
     let printWindow = window.open("", "_blank");
     printWindow.document.write(`
@@ -53,7 +53,7 @@ export default function DashboardPrescription({ page, setPage }) {
         </body>
       </html>
     `);
-  
+
     // Print the contents of the new window
     printWindow.document.close();
     printWindow.print();
