@@ -49,6 +49,7 @@ export default function DiagnosisStepper({ page, setPage }) {
   const getTemp = async () => {
     const response = await fetch("http://localhost:8000/api/v1/sensors/temperature");
     const data = await response.json();
+    localStorage.setItem("temperature",data.object_temperature)
     setTemp(data);
     setCounter(10)
     setActive(1)
@@ -58,6 +59,8 @@ export default function DiagnosisStepper({ page, setPage }) {
   const getbpmspo2 = async () => {
     const response = await fetch("http://localhost:8000/api/v1/sensors/heart-rate");
     const data = await response.json();
+    localStorage.setItem("spo2",data.spo2)
+    localStorage.setItem("bpm",data.bpm)
     setSpo2bpm(data);
     setActive(3)
   }

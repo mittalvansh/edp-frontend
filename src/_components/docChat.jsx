@@ -48,12 +48,13 @@ const DocChat = ({ page, setPage }) => {
   const [value, setValue] = useState("");
   const [image, setImage] = useState("");
   const [docChat, setDocChat] = useState([]);
-
+  const temperature = ((localStorage.getItem("temperature") * 9.0 / 5.0) + 32.0)
+  const bpm = localStorage.getItem("bpm")
+  const spo2 = localStorage.getItem("spo2")
   const capture = useCallback(() => {
     setImage(webcamRef.current.getScreenshot());
     close();
   }, [webcamRef]);
-
   async function uploadBlob(audioBlob, fileType) {
     const formData = new FormData();
     formData.append("audio_data", audioBlob, "file");
@@ -72,10 +73,9 @@ const DocChat = ({ page, setPage }) => {
         "http://localhost:8000/api/v1/chat/chat",
         {
           text: "",
-          pulse_rate: 80,
-          temperature: 98.6,
-          blood_pressure: "120/80",
-          oxygen_level: "90%",
+          pulse_rate: bpm,
+          temperature: temperature,
+          oxygen_level: spo2,
         }
       );
       const arr = docChat;
@@ -149,10 +149,9 @@ const DocChat = ({ page, setPage }) => {
           "http://localhost:8000/api/v1/chat/chat",
           {
             text: value,
-            pulse_rate: 80,
-            temperature: 98.6,
-            blood_pressure: "120/80",
-            oxygen_level: "90%",
+            pulse_rate: bpm,
+            temperature: temperature,
+            oxygen_level: spo2,
           }
         );
 
@@ -227,7 +226,7 @@ const DocChat = ({ page, setPage }) => {
           </Grid>
         </Stack>
         {docChat.map((symptom, index) => (
-          <div key={index}>
+          <Group key={index}>
             {symptom.id == 1 && (
               <Text bg="#EEF6F7" p="20px" mb="20px">
                 {symptom.message}
@@ -240,7 +239,7 @@ const DocChat = ({ page, setPage }) => {
                     <Text fw={600} size="24px" mb="10px">
                       Predicted Disease{" "}
                     </Text>
-                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                    <Text mb="15px" size="21px" style={{ lineHeight: "24px" }}>
                       {symptom.message.predicted_disease}
                     </Text>
                   </List.Item>
@@ -248,7 +247,7 @@ const DocChat = ({ page, setPage }) => {
                     <Text fw={600} size="24px" mb="10px">
                       Treatement Plan{" "}
                     </Text>
-                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                    <Text mb="15px" size="21px" style={{ lineHeight: "24px" }}>
                       {symptom.message.treatment_plan}
                     </Text>
                   </List.Item>
@@ -256,22 +255,22 @@ const DocChat = ({ page, setPage }) => {
                     <Text fw={600} size="24px" mb="10px">
                       Prescribed Drug{" "}
                     </Text>
-                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                    <Text mb="15px" size="21px" style={{ lineHeight: "24px" }}>
                       {symptom.message.prescribed_drugs}
                     </Text>
                   </List.Item>
                   <List.Item>
                     <Text fw={600} size="24px" mb="10px">
-                      specialization{" "}
+                      Specialization{" "}
                     </Text>
-                    <Text mb="15px" size="18px" style={{ lineHeight: "24px" }}>
+                    <Text mb="15px" size="21px" style={{ lineHeight: "24px" }}>
                       {symptom.message.specialization}
                     </Text>
                   </List.Item>
                 </List>
               </Text>
             )}
-          </div>
+          </Group>
         ))}
 
         <Group
@@ -280,7 +279,7 @@ const DocChat = ({ page, setPage }) => {
           pos="fixed"
           bottom="1.5rem"
           left="0"
-          // style={{ zIndex: 1000 }}
+        // style={{ zIndex: 1000 }}
         >
           <TextInput
             w="88%"
