@@ -6,10 +6,10 @@ const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
-import DiagnosisIntro from "@/components/diagnosisIntro";
-import DiagnosisStepper from "@/components/diagnosisStepper";
-import DocChat from "@/components/docChat";
 import { useState } from "react";
+import DiagnosisIntro from "@/_components/diagnosisIntro";
+import DiagnosisStepper from "@/_components/diagnosisStepper";
+import DocChat from "@/_components/docChat";
 
 export default function App({ Component, pageProps }) {
   const [page, setPage] = useState(0);
