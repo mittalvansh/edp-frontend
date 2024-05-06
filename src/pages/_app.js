@@ -1,6 +1,8 @@
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 import { createTheme, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -16,6 +18,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <MantineProvider theme={theme}>
+      <Notifications />
       <div>
         {page == 0 && <DiagnosisIntro page={page} setPage={setPage} />}
         {page == 1 && <DiagnosisStepper page={page} setPage={setPage} />}

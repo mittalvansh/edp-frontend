@@ -10,13 +10,13 @@ import {
   Button,
   Paper
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 
 export default function DiagnosisStepper({ page, setPage }) {
   const [active, setActive] = useState(0);
   const [temp, setTemp] = useState({});
   const [spo2bpm, setSpo2bpm] = useState({});
   const [counter, setCounter] = useState(10);
-
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -147,7 +147,7 @@ export default function DiagnosisStepper({ page, setPage }) {
           Next
         </Button>
       </Flex>
-      <Paper w={350} shadow="md" radius="md" p="lg" withBorder pos="fixed" left="4rem" bottom="1rem" style={{zIndex: "1000"}}>
+      <Paper w={350} shadow="md" radius="md" p="lg" withBorder pos="fixed" left="4rem" bottom="1rem" style={{ zIndex: "1000" }}>
         <Text size="md">{active == 0 ? "Place your finger on the Temperature Sensor" : "Place your Finger on the Heart Rate and Oxygen sensor after the timer"}</Text>
         <Text size="1.8rem" fw="bold">
           {counter}
