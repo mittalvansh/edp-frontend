@@ -16,7 +16,7 @@ export default function DiagnosisStepper({ page, setPage }) {
   const [active, setActive] = useState(0);
   const [temp, setTemp] = useState({});
   const [spo2bpm, setSpo2bpm] = useState({});
-  const [counter, setCounter] = useState(10);
+  const [counter, setCounter] = useState(11);
 
   useEffect(() => {
     if (counter == 10) {
@@ -36,23 +36,31 @@ export default function DiagnosisStepper({ page, setPage }) {
               autoClose: 10000,
             });
           } else {
-            clearInterval(ido); 
+            clearInterval(ido);
             notifications.close(ido);
           }
         }, 1000);
       } else {
-        // notifications.show({
-        //   title: "Place your finger on the Heart Rate and Oxygen sensor after the timer",
-        //   message: `Time Remaining: ${counter} seconds`,
-        //   autoClose: `${counter} * 1000`,
-        // });
+        const id = notifications.show({
+          title: "Place your finger on the Heart Rate and Oxygen Sensor",
+          message: `Time Remaining: ${counter} seconds`,
+          autoClose: 1000,
+        });
+        var count = counter;
+        const ido = setInterval(() => {
+          if (counter > 0) {
+            notifications.update({
+              id,
+              title: "Place your finger on the Heart Rate and Oxygen Sensor",
+              message: `Time Remaining: ${--count} seconds`,
+              autoClose: 10000,
+            });
+          } else {
+            clearInterval(ido);
+            notifications.close(ido);
+          }
+        }, 1000);
       }
-    } else {
-      console.log("Counter", counter);
-      notifications.update({
-        title: "Place your finger on the Temperature Sensor",
-        message: `Time Remaining: ${counter} seconds`,
-      });
     }
   }, [counter]);
 
@@ -130,9 +138,9 @@ export default function DiagnosisStepper({ page, setPage }) {
                 description={
                   Object.keys(temp).length > 0
                     ? "User Temperature - " +
-                      temp.object_temperature +
-                      " Ambient Temperature - " +
-                      temp.ambient_temperature
+                    temp.object_temperature +
+                    " Ambient Temperature - " +
+                    temp.ambient_temperature
                     : "Monitoring Your Temperature"
                 }
                 completedIcon={
