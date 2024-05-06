@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -11,11 +12,31 @@ import {
 import {
   IconChevronLeft,
 } from "@tabler/icons-react";
-import { useState } from "react";
-
 
 export default function Diagnosing({ page, setPage }) {
   const [active, setActive] = useState(0);
+  const [temp, setTemp] = useState({});
+  const [spo2bpm, setSpo2bpm] = useState({});
+  useEffect(() => {
+    if (active === 0) {
+      getTemp();
+    } else if (active === 1) {
+      getbpmspo2();
+    }
+  }, [active]);
+
+  const getTemp = async () => {
+    const response = await fetch("http://localhost:8000/api/v1/sensors/temperature");
+    const data = await response.json();
+    setTemp(data);
+    setActive(1);
+  }
+
+  const getbpmspo2 = async () => {
+    const response = await fetch("http://localhost:8000/api/v1/sensors/heart-rate");
+    const data = await response.json();
+    setSpo2bpm(data);
+  }
 
   return (
     <Box p="25px">
@@ -42,7 +63,7 @@ export default function Diagnosing({ page, setPage }) {
           >
             <Stepper.Step
               label="Body temperature"
-              description="38.5"
+              description={Object.keys(temp).length > 0 ? "User Temperature" + temp.object_temperature + " Ambient Temperature" + temp.ambient_temperature : "--"}
               completedIcon={
                 <Image src="/Ellipse 12.svg" h={"100%"} w={"100%"} />
               }
@@ -51,16 +72,7 @@ export default function Diagnosing({ page, setPage }) {
             />
             <Stepper.Step
               label="Heart Rate"
-              description="95 bmp"
-              completedIcon={
-                <Image src="/Ellipse 12.svg" h={"100%"} w={"100%"} />
-              }
-              icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
-              color="#EDFCFE"
-            />
-            <Stepper.Step
-              label="Blood Pressure"
-              description="Systolic: --  Diastolic: --"
+              description="--"
               completedIcon={
                 <Image src="/Ellipse 12.svg" h={"100%"} w={"100%"} />
               }
@@ -76,6 +88,7 @@ export default function Diagnosing({ page, setPage }) {
               icon={<Image src="/Ellipse 15.svg" h={"100%"} w={"100%"} />}
               color="#EDFCFE"
             />
+
           </Stepper>
         </Grid.Col>
         <Grid.Col span={6} align="center">
@@ -94,7 +107,7 @@ export default function Diagnosing({ page, setPage }) {
             w={"272px"}
             mb="15px"
           />
-           <Flex align='flex-end' justify='flex-end'>
+          <Flex align='flex-end' justify='flex-end'>
             <Button
               w="172px"
               h="48px"
@@ -110,7 +123,7 @@ export default function Diagnosing({ page, setPage }) {
           </Flex>
         </Grid.Col>
       </Grid>
-      
+
     </Box>
   );
 }
