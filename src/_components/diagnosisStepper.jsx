@@ -25,6 +25,7 @@ export default function DiagnosisStepper({ page, setPage }) {
           title: "Place your finger on the Temperature Sensor",
           message: `Time Remaining: ${counter} seconds`,
           autoClose: 1000,
+          style: { width: "450px",scale:2, fontSize: "30px" }
         });
         var count = counter;
         const ido = setInterval(() => {
@@ -33,6 +34,7 @@ export default function DiagnosisStepper({ page, setPage }) {
               id,
               title: "Place your finger on the Temperature Sensor",
               message: `Time Remaining: ${--count} seconds`,
+              style: { width: "450px",scale:2, fontSize: "30px" },
               autoClose: 10000,
             });
           } else {
@@ -133,7 +135,7 @@ export default function DiagnosisStepper({ page, setPage }) {
               iconSize={52}
               mt="3rem"
               orientation="vertical"
-              color="#085D66"
+              color="teal"
             >
               <Stepper.Step
                 label="Body temperature"
@@ -150,7 +152,7 @@ export default function DiagnosisStepper({ page, setPage }) {
                   <Image src="/completedIcon.svg" h="100%" w="100%" />
                 }
                 icon={<Image src="/baseIcon.svg" h="100%" w="100%" />}
-                color="#EDFCFE"
+                color="teal"
                 loading={active === 0}
               />
               <Stepper.Step
@@ -166,7 +168,7 @@ export default function DiagnosisStepper({ page, setPage }) {
                   <Image src="/completedIcon.svg" h="100%" w="100%" />
                 }
                 icon={<Image src="/baseIcon.svg" h="100%" w="100%" />}
-                color="#EDFCFE"
+                color="teal"
                 loading={active === 1}
               />
               <Stepper.Step

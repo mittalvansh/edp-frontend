@@ -251,6 +251,7 @@ const DocChat = ({ page, setPage }) => {
                   variant="outline"
                   color="#089BAB"
                   radius="xl"
+                  style={{fontSize: "1.1rem"}}
                   w="100%"
                   onClick={() => {
                     setValue(value + " " + symptom);
@@ -312,14 +313,15 @@ const DocChat = ({ page, setPage }) => {
 
         <Group px="4rem" w="100%" pos="fixed" bottom="0.5rem" left="0">
           <TextInput
-            w="88%"
-            size="lg"
+            w="85%"
+            size="xl"
             value={value}
+            radius="15px"
             variant="filled"
             onChange={(event) => setValue(event.currentTarget.value)}
             placeholder="Tell us how are you feeling"
             rightSection={
-              <ActionIcon variant="transparent" c="#9CA0A0">
+              <ActionIcon variant="transparent" c="#9CA0A0" size="xl">
                 {!loading ? (
                   <IconSend onClick={handleSubmit} />
                 ) : (
@@ -334,7 +336,7 @@ const DocChat = ({ page, setPage }) => {
                 variant="transparent"
                 c="white"
                 p={0}
-                size="3.2rem"
+                size="3.6rem"
                 radius="50%"
                 bg={recordingState === "recording" ? "#FF4545" : "#089BAB"}
                 onClick={
@@ -343,18 +345,18 @@ const DocChat = ({ page, setPage }) => {
                     : startRecording
                 }
               >
-                <IconMicrophone />
+                <IconMicrophone size="30px" />
               </ActionIcon>
               <ActionIcon
                 variant="transparent"
                 c="white"
                 p={0}
-                size="3.2rem"
+                size="3.6rem"
                 radius="50%"
                 bg="#089BAB"
                 onClick={open}
               >
-                <IconCamera />
+                <IconCamera size="35px" />
               </ActionIcon>
             </>
           )}
